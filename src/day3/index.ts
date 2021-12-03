@@ -1,81 +1,95 @@
 import { parseInput } from "../helper/fileImport"
 
 
+let oxygenDec
+let co2Dec
+
+
 
 const main = (input:string) => {
    const initialArray = parseInput(input)
    sumBits(initialArray)
+   stepOxygen(initialArray, 0)
+   stepCO2(initialArray, 0)
+   console.log("---- PART TWO ----")
+   console.log({oxygenDec, co2Dec, result: oxygenDec * co2Dec})
+}
+
+const stepOxygen = (initial:string[], position:number) => {
+
+    let one = 0;
+    let zero = 0
+
+    for (let i = 0; i < initial.length; i++) {
+        const value = initial[i].substr(position, 1)
+        if (value === "0") zero++
+        if (value === "1") one++
+    }
+
+    let newArr
+
+    if (one > zero) newArr = filter(initial, "1", position)
+    else if (one == zero) newArr = filter(initial, "1", position)
+    else newArr = filter(initial, "0", position)
+
+    if (newArr.length === 1) {
+        //console.log("only one")
+        oxygenDec = parseInt(newArr[0], 2)
+    }
+    else {
+        //console.log("moving along to possition: " + (position + 1))
+        stepOxygen(newArr, position + 1)
+    }
+    
+
+}
+
+const stepCO2 = (initial:string[], position:number) => {
+
+    let one = 0;
+    let zero = 0
+
+    for (let i = 0; i < initial.length; i++) {
+        const value = initial[i].substr(position, 1)
+        if (value === "0") zero++
+        if (value === "1") one++
+    }
+
+    let newArr
+
+    if (one < zero) newArr = filter(initial, "1", position)
+    else if (one == zero) newArr = filter(initial, "0", position)
+    else newArr = filter(initial, "0", position)
+
+    if (newArr.length === 1) {
+        //console.log("only one")
+        co2Dec = parseInt(newArr[0], 2)
+    }
+    else {
+        //console.log("moving along to possition: " + (position + 1))
+        stepCO2(newArr, position + 1)
+    }
+    
+
+}
+
+const filter = (arr:string[], value:string, position:number) => {
+
+    const filteredArr = []
+
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].substr(position, 1) === value) {
+            filteredArr.push(arr[i])
+        }
+    }
+
+    return filteredArr
+
 }
 
 const sumBits = (data:string[]) => {
 
     const bits = {}
-
-
-    const findMostCommon = (b:number[]) => {
-
-        let g1:string
-        let g2:string
-        let g3:string
-        let g4:string
-        let g5:string
-
-        let e1:string
-        let e2:string
-        let e3:string
-        let e4:string
-        let e5:string
-
-        const l = data.length / 2
-
-        if (b[0] > l) {
-            g1 = "1"
-            e1 = "0"}
-        else {
-            g1 = "0"
-            e1 = "1"
-        }
-
-        if (b[1] > l) {
-            g2 = "1"
-            e2 = "0"}
-        else {
-            g2 = "0"
-            e2 = "1"
-        }
-
-        if (b[2] > l) {
-            g3 = "1"
-            e3 = "0"}
-        else {
-            g3 = "0"
-            e3 = "1"
-        }
-
-        if (b[3] > l) {
-            g4 = "1"
-            e4 = "0"}
-        else {
-            g4 = "0"
-            e4 = "1"
-        }
-
-        if (b[4] > l) {
-            g5 = "1"
-            e5 = "0"}
-        else {
-            g5 = "0"
-            e5 = "1"
-        }
-
-        const gammaBin = g1+g2+g3+g4+g5;
-        const epsilonBin = e1+e2+e3+e4+e5;
-        const gammaHex = parseInt(gammaBin, 2)
-        const epsilonHex = parseInt(epsilonBin, 2)
-
-        return {gammaBin, gammaHex, epsilonBin, epsilonHex, result: gammaHex * epsilonHex}
-
-    }
 
 
     for (let i = 0; i < data.length; i++) {
@@ -90,7 +104,7 @@ const sumBits = (data:string[]) => {
 
     }
 
-    console.log(bits)
+    // console.log(bits)
     const keys = Object.keys(bits)
 
     const l = data.length / 2
@@ -111,14 +125,12 @@ const sumBits = (data:string[]) => {
 
     }
 
-    console.log(ga.join(""))
-    console.log(ea.join(""))
-
     const gammaBin = ga.join("")
     const epsilonBin = ea.join("");
     const gammaHex = parseInt(gammaBin, 2)
     const epsilonHex = parseInt(epsilonBin, 2)
 
+    console.log("---- PART ONE ----")
     console.log({gammaBin, gammaHex, epsilonBin, epsilonHex, result: gammaHex * epsilonHex})
 
     //console.log(findMostCommon([p1, p2, p3, p4, p5]))
@@ -127,5 +139,5 @@ const sumBits = (data:string[]) => {
 
 }
 
-main('./assets/dayThree/testInput.txt')
+// main('./assets/dayThree/testInput.txt')
 main('./assets/dayThree/input.txt')
