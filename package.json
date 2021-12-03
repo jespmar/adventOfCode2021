@@ -1,0 +1,19 @@
+{
+  "name": "december-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "puzzle1": "node puzzle1/index.js",
+    "start": "tsc && node dist/$DAY/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "tslint": "^6.1.3",
+    "typescript": "^4.5.2"
+  }
+}
