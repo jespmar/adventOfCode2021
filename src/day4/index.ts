@@ -113,44 +113,9 @@ const drawBoards = (boards:any) => {
 }
 
 
+const drawInTerminal = (board:any) => {
 
-
-const drawBoard = (board:any, key:string) => {
-
-
-    const checkCol = (pos:number) => {
-        if (matchValue(board[0][pos]) && matchValue(board[1][pos]) && matchValue(board[2][pos]) && matchValue(board[3][pos]) && matchValue(board[4][pos])) {
-            return true
-        } else return false
-    }
-
-
-    let isWinner = false
-
-    const allRows = (row:number[]) => {
-        if (matchValue(row[0]) && matchValue(row[1]) && matchValue(row[2]) && matchValue(row[3]) && matchValue(row[4])) {
-            return true
-            } else return false
-    }
-
-
-    for (let i = 0; i < board.length; i++) {
-
-
-        if (allRows(board[i])) {
-            isWinner = true
-            //winnerFound = true
-            //break
-        }
-    }
-
-    /* formatter: function (value) {
-        let str = `$${value.toFixed(2)}`
-        return (value > 5) ? this.style(str, "green", "bold") : 
-          this.style(str, "red", "underline")
-      } */
-
-      function formatter(value) {
+    function formatter(value) {
         //console.log(value)
         if (value === drawnNumbers[drawnNumbers.length - 1]) return this.style(value.toString(), "bgRed", "white", "bold")
         else {
@@ -194,9 +159,49 @@ const drawBoard = (board:any, key:string) => {
 
 
       const out = Table(header,board).render()
-      console.log(out); //prints output
-      //console.log({lastDrawnNumber: drawnNumbers[drawnNumbers.length - 1]})
-      //console.log({drawnNumbers})
+      console.log(out);
+
+}
+
+
+
+
+const drawBoard = (board:any, key:string) => {
+
+
+    const checkCol = (pos:number) => {
+        if (matchValue(board[0][pos]) && matchValue(board[1][pos]) && matchValue(board[2][pos]) && matchValue(board[3][pos]) && matchValue(board[4][pos])) {
+            return true
+        } else return false
+    }
+
+
+    let isWinner = false
+
+    const allRows = (row:number[]) => {
+        if (matchValue(row[0]) && matchValue(row[1]) && matchValue(row[2]) && matchValue(row[3]) && matchValue(row[4])) {
+            return true
+            } else return false
+    }
+
+
+    for (let i = 0; i < board.length; i++) {
+
+
+        if (allRows(board[i])) {
+            isWinner = true
+            //winnerFound = true
+            //break
+        }
+    }
+
+    /* formatter: function (value) {
+        let str = `$${value.toFixed(2)}`
+        return (value > 5) ? this.style(str, "green", "bold") : 
+          this.style(str, "red", "underline")
+      } */
+
+     drawInTerminal(board)
 
       if (checkCol(0) || checkCol(1) || checkCol(2) || checkCol(3) || checkCol(4)) {
         isWinner = true
@@ -225,7 +230,7 @@ const drawBoard = (board:any, key:string) => {
         }
 
         //console.log({sum, lastDrawnNumber, result: sum * lastDrawnNumber})
-        doneBoards.push({board: key, sum, lastDrawnNumber, result: sum * lastDrawnNumber})
+        doneBoards.push({board: board, boardNumber: key, sum, lastDrawnNumber, result: sum * lastDrawnNumber})
         //console.log(doneBoards)
         delete finalBoards[key]
 
@@ -251,8 +256,10 @@ const drawNumbers = (boards:any) => {
 
     }
 
-    console.log({partOne: doneBoards[0], partTwo: doneBoards[doneBoards.length - 1]})
-
+    drawInTerminal(doneBoards[0].board)
+    console.log({partOne: doneBoards[0]})
+    drawInTerminal(doneBoards[doneBoards.length - 1].board)
+    console.log({partTwo: doneBoards[doneBoards.length - 1]})
 
 
 }
