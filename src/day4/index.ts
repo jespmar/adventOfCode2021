@@ -11,6 +11,8 @@ let numberIndexing = 0
 
 let finalBoards
 
+let doneBoards = []
+
 const dataBuilder = (input:string) => {
 
     const arr = parseInput(input)
@@ -77,11 +79,10 @@ const buildBetterBoards = (boards:any[]) => {
 
     }
 
-  
+    finalBoards = boardObject
 
    drawNumbers(boardObject)
 
-   finalBoards = boardObject
    //run()
 
 }
@@ -99,14 +100,14 @@ const matchValue = (value:number) => {
 
 
 const drawBoards = (boards:any) => {
+
     const keys = Object.keys(boards)
     // console.log(keys)
 
     for (let i = 0; i < keys.length; i++) {
         console.log("BOARD " + keys[i])
-        console.log(boards[keys[i]])
         if (!winnerFound) drawBoard(boards[keys[i]], keys[i])
-        if (winnerFound) break
+        // if (winnerFound) break
         
     }
 }
@@ -116,10 +117,6 @@ const drawBoards = (boards:any) => {
 
 const drawBoard = (board:any, key:string) => {
 
-    console.log({B1: board[0][0]})
-    console.log({B2: board[1][0]})
-    console.log({I1: board[0][1]})
-    console.log({I2: board[1][1]})
 
     const checkCol = (pos:number) => {
         if (matchValue(board[0][pos]) && matchValue(board[1][pos]) && matchValue(board[2][pos]) && matchValue(board[3][pos]) && matchValue(board[4][pos])) {
@@ -142,8 +139,8 @@ const drawBoard = (board:any, key:string) => {
 
         if (allRows(board[i])) {
             isWinner = true
-            winnerFound = true
-            break
+            //winnerFound = true
+            //break
         }
     }
 
@@ -203,7 +200,7 @@ const drawBoard = (board:any, key:string) => {
 
       if (checkCol(0) || checkCol(1) || checkCol(2) || checkCol(3) || checkCol(4)) {
         isWinner = true
-        winnerFound = true
+        //winnerFound = true
     }
 
 
@@ -227,7 +224,10 @@ const drawBoard = (board:any, key:string) => {
 
         }
 
-        console.log({sum, lastDrawnNumber, result: sum * lastDrawnNumber})
+        //console.log({sum, lastDrawnNumber, result: sum * lastDrawnNumber})
+        doneBoards.push({board: key, sum, lastDrawnNumber, result: sum * lastDrawnNumber})
+        //console.log(doneBoards)
+        delete finalBoards[key]
 
 
       }
@@ -241,42 +241,22 @@ const drawNumbers = (boards:any) => {
 
     for (let i = 0; i < numbersToDraw.length; i++) {
 
-        if (winnerFound) break
+       // if (winnerFound) break
 
         drawnNumbers.push(parseInt(numbersToDraw[i]))
-        console.log({drawnNumbers})
+        //console.log({drawnNumbers})
 
         drawBoards(boards)
 
 
     }
 
+    console.log({partOne: doneBoards[0], partTwo: doneBoards[doneBoards.length - 1]})
+
 
 
 }
 
-const run = () => {
-    inquirer
-  .prompt([
-    {
-      type: 'list',
-      name: 'theme',
-      message: 'What do you want to do?',
-      choices: [
-        'play bingo',
-      ],
-    },
-  ])
-  .then((answers) => {
-    if (answers.theme === "play bingo") {
-        drawnNumbers.push(parseInt(numbersToDraw[numberIndexing]))
-        drawBoards(finalBoards)
-        numberIndexing++
-        console.log("Lets play bingo")
-        run()
-    }
-  });
-}
 
 //rowChecker([ '14', '21', '17', '24', '4' ])
 //drawBoards()
